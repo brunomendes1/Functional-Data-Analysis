@@ -1,0 +1,32 @@
+plot.cca.fd <- function(ccafd, cexval = 1, ask=F, ...)
+{
+#  Plot a functional canonical correlation analysis object CCAFD
+#
+#  Other arguments are passed to plot.fd
+#
+
+#  Last modified 20 November 2005
+
+  if (!(inherits(ccafd, "cca.fd"))) stop("First argument not of CCA.FD class.")
+
+  ccafd1   <- ccafd[[1]]
+  ccacoef1 <- ccafd1$coefs
+  ccafd2   <- ccafd[[2]]
+  ccacoef2 <- ccafd1$coefs
+
+  ncan <- dim(ccacoef1)[2]
+  oldPar <- par(mfrow=c(2,1),pty="m")
+  on.exit(par(oldPar))
+  if (!ask) {
+		plot(ccafd1, ylab="First  canonical weight", cex=cexval, ask=F)
+		plot(ccafd2, ylab="Second canonical weight", cex=cexval, ask=F)
+  } else {
+    	for (j in (1:ncan)) {
+			plot(ccafd1[j], ylab="First  canonical weight", cex=cexval, ask=ask,
+			     main=paste("Harmonic",j))
+			plot(ccafd2[j], ylab="Second canonical weight", cex=cexval,
+			     main="")
+    	}
+  }
+  invisible(NULL)
+}

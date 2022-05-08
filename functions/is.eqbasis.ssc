@@ -1,0 +1,47 @@
+is.eqbasis <- function(basisobj1, basisobj2) {
+	
+	#  tests to see of two basis objects are identical
+	
+	eqwrd <- T
+	
+	#  test type
+	
+	if (basisobj1$type != basisobj2$type) {
+		eqwrd <- F
+		return(eqwrd)
+	}
+	
+	#  test range
+	
+	if (any(basisobj1$rangeval != basisobj2$rangeval)) {
+		eqwrd <- F
+		return(eqwrd)
+	}
+	
+	#  test nbasis
+	
+	if (basisobj1$nbasis != basisobj2$nbasis) {
+		eqwrd <- F
+		return(eqwrd)
+	}
+	
+	#  test params
+	
+	if (any(basisobj1$params != basisobj2$params)) {
+		eqwrd <- F
+		return(eqwrd)
+	}
+
+   #  test dropind
+	
+	if (any(basisobj1$dropind != basisobj2$dropind)) {
+		eqwrd <- F
+		return(eqwrd)
+	}
+	
+	return(eqwrd)
+	
+}
+
+	
+	

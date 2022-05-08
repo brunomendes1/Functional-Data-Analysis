@@ -1,0 +1,30 @@
+monhessC <- function(arg, Wfd) {
+	narg   <- length(arg)
+	basis  <- Wfd$basis
+	nbasis <- basis$nbasis
+	nvar   <- 1
+	coef   <- Wfd$coefs
+	type   <- 2
+	range  <- basis$rangeval
+	params <- basis$params
+	npar   <- length(params)
+	norder <- nbasis - npar
+	
+	#  set up number of pairs of basis functions that yield
+	#  nonzero second derivatives.  This can be much less than
+	#  the total number of pairs
+	
+	nbaspr <- nbasis*norder - norder*(norder-1)/2
+	
+	hessarg  <- matrix(0,narg,nbaspr)
+	
+   	hessout <- .C("monhessBuf", 
+                      as.integer(narg), as.double(arg),   as.integer(nbasis),
+                      as.integer(nvar), as.double(coef),  as.integer(type),
+                      as.double(range), as.integer(npar), as.double(params),
+					     as.double(hessarg))[[10]]
+   	hessband <- matrix(hessout, narg, nbaspr)
+	
+	return(hessband)
+	
+}

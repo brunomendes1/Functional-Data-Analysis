@@ -1,0 +1,37 @@
+getbasispenaltyC <- function(basisobj, nderiv) {
+	
+#  Computes the penalty matrix  associated with BASISOBJ.
+#    This is defined in terms of a linear differential operator Lfd
+
+#  This is a wrapper function for C++ function of the same name
+
+#  Last modified 26 October 2005
+
+if (!(inherits(basisobj, "basisfd"))) stop(
+    "First argument is not a basis object.")
+
+	nbasis <- basisobj$nbasis
+	type   <- basisobj$type
+	range  <- basisobj$rangeval
+	params <- basisobj$params
+	npar   <- length(params)
+	
+	ntype <- 0
+	if (type == "fourier")        ntype <- 1
+	if (type == "bspline")        ntype <- 2
+	if (type == "constant")       ntype <- 3
+	if (type == "exponential")    ntype <- 4
+	if (type == "polyg")          ntype <- 5
+	if (type == "power")          ntype <- 6
+	
+	if (ntype == 0) stop("Unrecognizable basis")
+		
+	penaltymat <- matrix(0,nbasis,nbasis)
+		
+   penaltymat <- .C("getbasispenalty",
+                    as.integer(nderiv), as.integer(nbasis),
+                    as.integer(ntype),  as.double(range),
+                    as.integer(npar),   as.double(params),
+                    as.double(penaltymat))[[7]]
+   return(matrix(penaltymat,nbasis,nbasis))
+}

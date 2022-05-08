@@ -1,0 +1,25 @@
+monfnC <- function(arg, Wfd) {
+	
+	#  wrapper function for C function monfnBuf
+	
+	#  Last modified 26 October 2005
+	
+	narg     <- length(arg)
+	basisobj <- Wfd$basis
+	nbasis   <- basisobj$nbasis
+	nvar     <- 1
+	coef     <- Wfd$coefs
+	type     <- 2
+	range    <- basisobj$rangeval
+	params   <- basisobj$params
+	npar     <- length(params)
+	
+	farg  <- rep(0,narg)
+	
+   fout <- .C("monfnBuf", as.integer(narg), as.double(arg), as.integer(nbasis),
+                          as.integer(nvar), as.double(coef), as.integer(type),
+                          as.double(range), as.integer(npar), as.double(params),
+					         as.double(farg))[[10]]
+   return(fout)
+
+}

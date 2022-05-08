@@ -1,0 +1,7 @@
+files <- scan("functions.txt",list(""))
+
+
+for (file in 100:109) {
+    print(files[[1]][file])
+    source(files[[1]][file])
+}
